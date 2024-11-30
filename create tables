@@ -1,0 +1,63 @@
+CREATE TABLE `cmpe_138_project`.`Users` (
+  `idUsers` INT NOT NULL AUTO_INCREMENT,
+  `Email` VARCHAR(45) NOT NULL,
+  `Username` VARCHAR(16) NOT NULL,
+  `password` VARCHAR(16) NOT NULL,
+  PRIMARY KEY (`idUsers`),
+  UNIQUE INDEX `username_UNIQUE` (`Username` ASC) VISIBLE,
+  UNIQUE INDEX `Email_UNIQUE` (`Email` ASC) VISIBLE);
+
+
+CREATE TABLE `cmpe_138_project`.`Directors` (
+  `idDirectors` INT NOT NULL AUTO_INCREMENT,
+  `Directors_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idDirectors`),
+  UNIQUE INDEX `Directors_name_UNIQUE` (`Directors_name` ASC) VISIBLE);
+
+
+CREATE TABLE `cmpe_138_project`.`Movies` (
+  `idMovies` INT NOT NULL AUTO_INCREMENT,
+  `Title` VARCHAR(45) NOT NULL,
+  `Release_Year` INT NOT NULL,
+  `Runtime` INT NOT NULL,
+  `rating` DECIMAL(3,1) NOT NULL,
+  `Overview` TEXT NOT NULL,
+  `Meta_Score` INT NOT NULL,
+  `idDirectors` INT,
+  PRIMARY KEY (`idMovies`),
+   FOREIGN KEY (idDirectors) REFERENCES cmpe_138_project.Directors(idDirectors) ON DELETE SET NULL
+  );
+  
+CREATE TABLE `cmpe_138_project`.`Genres` (
+  `idGenres` INT NOT NULL AUTO_INCREMENT,
+  `genre_type` VARCHAR(16) NOT NULL,
+  PRIMARY KEY (`idGenres`),
+  UNIQUE INDEX `genre_type_UNIQUE` (`genre_type` ASC) VISIBLE);
+
+CREATE TABLE `cmpe_138_project`.`Starring` (
+  `idStarring` INT NOT NULL AUTO_INCREMENT,
+  `Star_Name` VARCHAR(45) NOT NULL,
+  UNIQUE INDEX `idStarring_UNIQUE` (`idStarring` ASC) VISIBLE,
+  PRIMARY KEY (`idStarring`),
+  UNIQUE INDEX `Star_Name_UNIQUE` (`Star_Name` ASC) VISIBLE);
+
+CREATE TABLE `cmpe_138_project`.`Movie_Genre_Relation` (
+  `idMov_gen` INT NOT NULL AUTO_INCREMENT,
+  `idMovies` INT NOT NULL,
+  `idGenres` INT NOT NULL,
+    PRIMARY KEY (`idMov_gen`),
+    FOREIGN KEY (idMovies) REFERENCES Movies(idMovies),
+	FOREIGN KEY (idGenres) REFERENCES Genres(idGenres)
+  );
+
+CREATE TABLE `cmpe_138_project`.`Movie_Starring_Relation` (
+  `idMov_star` INT NOT NULL AUTO_INCREMENT,
+  `idMovies` INT NOT NULL,
+  `idStarring` INT NOT NULL,
+    PRIMARY KEY (`idMov_star`),
+    FOREIGN KEY (idMovies) REFERENCES Movies(idMovies),
+	FOREIGN KEY (idStarring) REFERENCES Starring(idStarring)
+  );
+
+// user interactions table needed
+//reccomendations table needed
