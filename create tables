@@ -59,5 +59,24 @@ CREATE TABLE `cmpe_138_project`.`Movie_Starring_Relation` (
 	FOREIGN KEY (idStarring) REFERENCES Starring(idStarring)
   );
 
-// user interactions table needed
-//reccomendations table needed
+CREATE TABLE `cmpe_138_project`.`User_Interactions` (
+  `idInteractions` INT NOT NULL AUTO_INCREMENT,
+  `idUsers` INT NOT NULL,
+  `idMovies` INT NOT NULL,
+  `Rating` DECIMAL(3,1) DEFAULT NULL,
+  `Watchlist` BOOLEAN DEFAULT FALSE,
+  `Watched` BOOLEAN DEFAULT FALSE,
+  PRIMARY KEY (`idInteractions`),
+  FOREIGN KEY (`idUsers`) REFERENCES Users(`idUsers`) ON DELETE CASCADE,
+  FOREIGN KEY (`idMovies`) REFERENCES Movies(`idMovies`) ON DELETE CASCADE
+);
+
+CREATE TABLE `cmpe_138_project`.`Recommendations` (
+  `idRecommendations` INT NOT NULL AUTO_INCREMENT,
+  `idUsers` INT NOT NULL,
+  `idMovies` INT NOT NULL,
+  `Recommendation_Score` DECIMAL(5,2) NOT NULL, 
+  PRIMARY KEY (`idRecommendations`),
+  FOREIGN KEY (`idUsers`) REFERENCES Users(`idUsers`) ON DELETE CASCADE,
+  FOREIGN KEY (`idMovies`) REFERENCES Movies(`idMovies`) ON DELETE CASCADE
+);
