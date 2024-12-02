@@ -1,0 +1,129 @@
+CREATE TABLE `cmpe_138_project`.`Users` (
+  `idUsers` INT NOT NULL AUTO_INCREMENT,
+  `Email` VARCHAR(45) NOT NULL,
+  `Username` VARCHAR(16) NOT NULL,
+  `password` VARCHAR(16) NOT NULL,
+  PRIMARY KEY (`idUsers`),
+  UNIQUE INDEX `username_UNIQUE` (`Username` ASC) VISIBLE,
+  UNIQUE INDEX `Email_UNIQUE` (`Email` ASC) VISIBLE);
+
+
+CREATE TABLE `cmpe_138_project`.`Directors` (
+  `idDirectors` INT NOT NULL AUTO_INCREMENT,
+  `Directors_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idDirectors`),
+  UNIQUE INDEX `Directors_name_UNIQUE` (`Directors_name` ASC) VISIBLE);
+
+
+CREATE TABLE `cmpe_138_project`.`Movies` (
+  `idMovies` INT NOT NULL AUTO_INCREMENT,
+  `Title` VARCHAR(45) NOT NULL,
+  `Release_Year` VARCHAR(45) NOT NULL,
+  `Runtime` VARCHAR(45) NOT NULL,
+  `rating` DECIMAL(3,1) NOT NULL,
+  `Overview` TEXT NOT NULL
+  `idDirectors` INT,
+  PRIMARY KEY (`idMovies`),
+   FOREIGN KEY (idDirectors) REFERENCES cmpe_138_project.Directors(idDirectors) ON DELETE SET NULL
+  );
+  
+CREATE TABLE `cmpe_138_project`.`Genres` (
+  `idGenres` INT NOT NULL AUTO_INCREMENT,
+  `genre_type` VARCHAR(16) NOT NULL,
+  PRIMARY KEY (`idGenres`),
+  UNIQUE INDEX `genre_type_UNIQUE` (`genre_type` ASC) VISIBLE);
+
+CREATE TABLE `cmpe_138_project`.`Starring` (
+  `idStarring` INT NOT NULL AUTO_INCREMENT,
+  `Star_Name` VARCHAR(45) NOT NULL,
+  UNIQUE INDEX `idStarring_UNIQUE` (`idStarring` ASC) VISIBLE,
+  PRIMARY KEY (`idStarring`),
+  UNIQUE INDEX `Star_Name_UNIQUE` (`Star_Name` ASC) VISIBLE);
+
+CREATE TABLE `cmpe_138_project`.`Movie_Genre_Relation` (
+  `idMov_gen` INT NOT NULL AUTO_INCREMENT,
+  `idMovies` INT NOT NULL,
+  `idGenres` INT NOT NULL,
+    PRIMARY KEY (`idMov_gen`),
+    FOREIGN KEY (idMovies) REFERENCES Movies(idMovies),
+	FOREIGN KEY (idGenres) REFERENCES Genres(idGenres)
+  );
+
+CREATE TABLE `cmpe_138_project`.`Movie_Starring_Relation` (
+  `idMov_star` INT NOT NULL AUTO_INCREMENT,
+  `idMovies` INT NOT NULL,
+  `idStarring` INT NOT NULL,
+    PRIMARY KEY (`idMov_star`),
+    FOREIGN KEY (idMovies) REFERENCES Movies(idMovies),
+	FOREIGN KEY (idStarring) REFERENCES Starring(idStarring)
+  );
+
+CREATE TABLE `cmpe_138_project`.`User_Preferences` (
+  `idPreference` INT NOT NULL AUTO_INCREMENT,
+  `idUsers` INT NOT NULL,
+  `min_runtime` INT DEFAULT NULL,
+  `max_runtime` INT DEFAULT NULL,
+  PRIMARY KEY (`idPreference`),
+  FOREIGN KEY (`idUsers`) REFERENCES `Users`(`idUsers`) ON DELETE CASCADE
+);
+
+CREATE TABLE `cmpe_138_project`.`Users_fav_Directors` (
+  `idFav_Dir` INT NOT NULL AUTO_INCREMENT,
+  `idUsers` INT NOT NULL,
+  `idDirectors` INT NOT NULL,
+  PRIMARY KEY (`idFav_Dir`),
+  FOREIGN KEY (`idUsers`) REFERENCES `Users`(`idUsers`) ON DELETE CASCADE,
+  FOREIGN KEY (`idDirectors`) REFERENCES `Directors`(`idDirectors`) ON DELETE CASCADE
+);
+
+CREATE TABLE `cmpe_138_project`.`Users_Fav_Actors` (
+  `idFav_Actor` INT NOT NULL AUTO_INCREMENT,
+  `idUsers` INT NOT NULL,
+  `idStarring` INT NOT NULL,
+  PRIMARY KEY (`idFav_Actor`),
+  FOREIGN KEY (`idUsers`) REFERENCES `Users`(`idUsers`) ON DELETE CASCADE,
+  FOREIGN KEY (`idStarring`) REFERENCES `Starring`(`idStarring`) ON DELETE CASCADE
+);
+
+
+CREATE TABLE `cmpe_138_project`.`Users_Fav_Genres` (
+  `idFav_Genre` INT NOT NULL AUTO_INCREMENT,
+  `idUsers` INT NOT NULL,
+  `idGenres` INT NOT NULL,
+  PRIMARY KEY (`idFav_Genre`),
+  FOREIGN KEY (`idUsers`) REFERENCES `Users`(`idUsers`) ON DELETE CASCADE,
+  FOREIGN KEY (`idGenres`) REFERENCES `Genres`(`idGenres`) ON DELETE CASCADE
+);
+
+CREATE TABLE `cmpe_138_project`.`Users_Watched_Movies` (
+  `idWatched` INT NOT NULL AUTO_INCREMENT,
+  `idUsers` INT NOT NULL,
+  `idMovies` INT NOT NULL,
+  PRIMARY KEY (`idWatched`),
+  FOREIGN KEY (`idUsers`) REFERENCES `Users`(`idUsers`) ON DELETE CASCADE,
+  FOREIGN KEY (`idMovies`) REFERENCES `Movies`(`idMovies`) ON DELETE CASCADE
+);
+
+
+CREATE TABLE `cmpe_138_project`.`User_Watch_List` (
+  `idWatch_List` INT NOT NULL AUTO_INCREMENT,
+  `idUsers` INT NOT NULL,
+  `idMovies` INT NOT NULL,
+  PRIMARY KEY (`idWatch_List`),
+  FOREIGN KEY (`idUsers`) REFERENCES `Users`(`idUsers`) ON DELETE CASCADE,
+  FOREIGN KEY (`idMovies`) REFERENCES `Movies`(`idMovies`) ON DELETE CASCADE
+);
+
+CREATE TABLE `cmpe_138_project`.`Recommendations` (
+  `idRecommendations` INT NOT NULL AUTO_INCREMENT,
+  `idUsers` INT NOT NULL,
+  `idMovies` INT NOT NULL,
+  `Reason` VARCHAR(255) NULL,
+  PRIMARY KEY (`idRecommendations`),
+  FOREIGN KEY (`idUsers`) REFERENCES `cmpe_138_project`.`Users` (`idUsers`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (`idMovies`) REFERENCES `cmpe_138_project`.`Movies` (`idMovies`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
