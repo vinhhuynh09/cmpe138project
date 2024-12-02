@@ -1,0 +1,79 @@
+
+INSERT INTO Recommendations (idUsers, idMovies, Reason)
+SELECT 
+    1 AS idUsers,  
+    m.idMovies,
+    'Based on favorite genres' AS Reason
+FROM Movies m
+JOIN Movie_Genre_Relation mgr ON m.idMovies = mgr.idMovies
+JOIN Users_Fav_Genres ufg ON mgr.idGenres = ufg.idGenres
+WHERE ufg.idUsers = 1  
+AND m.idMovies NOT IN (
+    SELECT idMovies FROM Users_Watched_Movies WHERE idUsers = 1
+)
+AND m.idMovies NOT IN (
+    SELECT idMovies FROM User_Watch_List WHERE idUsers = 1
+)
+LIMIT 5;
+
+
+
+
+INSERT INTO Recommendations (idUsers, idMovies, Reason)
+SELECT 
+    1 AS idUsers,  
+    m.idMovies,
+    'Based on favorite stars' AS Reason
+FROM Movies m
+JOIN Movie_Starring_Relation msr ON m.idMovies = msr.idMovies
+JOIN Users_Fav_Actors ufa ON msr.idStarring = ufa.idStarring
+WHERE ufa.idUsers = 1  
+AND m.idMovies NOT IN (
+    SELECT idMovies FROM Users_Watched_Movies WHERE idUsers = 1
+)
+AND m.idMovies NOT IN (
+    SELECT idMovies FROM User_Watch_List WHERE idUsers = 1
+)
+LIMIT 5;
+
+INSERT INTO Recommendations (idUsers, idMovies, Reason)
+SELECT 
+    1 AS idUsers,
+    m.idMovies,
+    'Based on favorite directors' AS Reason
+FROM Movies m
+JOIN Users_Fav_Directors ufd ON m.idDirectors = ufd.idDirectors
+WHERE ufd.idUsers = 1  
+AND m.idMovies NOT IN (
+    SELECT idMovies FROM Users_Watched_Movies WHERE idUsers = 1
+)
+AND m.idMovies NOT IN (
+    SELECT idMovies FROM User_Watch_List WHERE idUsers = 1
+)
+LIMIT 5;
+
+INSERT INTO Recommendations (idUsers, idMovies, Reason)
+SELECT 
+    1 AS idUsers,
+    m.idMovies,
+    'Based on favorite directors' AS Reason
+FROM Movies m
+JOIN Users_fav_Directors ufd ON m.idDirectors = ufd.idDirectors
+WHERE ufd.idUsers = 1  
+AND m.idMovies NOT IN (
+    SELECT idMovies FROM Users_Watched_Movies WHERE idUsers = 1
+)
+AND m.idMovies NOT IN (
+    SELECT idMovies FROM User_Watch_List WHERE idUsers = 1
+)
+LIMIT 5;
+
+
+
+SELECT 
+    r.idUsers, 
+    m.Title AS Movie_Title, 
+    r.Reason
+FROM Recommendations r
+JOIN Movies m ON r.idMovies = m.idMovies
+WHERE r.idUsers = 1;  
