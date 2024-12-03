@@ -52,22 +52,6 @@ AND m.idMovies NOT IN (
 )
 LIMIT 5;
 
-INSERT INTO Recommendations (idUsers, idMovies, Reason)
-SELECT 
-    1 AS idUsers,
-    m.idMovies,
-    'Based on favorite directors' AS Reason
-FROM Movies m
-JOIN Users_fav_Directors ufd ON m.idDirectors = ufd.idDirectors
-WHERE ufd.idUsers = 1  
-AND m.idMovies NOT IN (
-    SELECT idMovies FROM Users_Watched_Movies WHERE idUsers = 1
-)
-AND m.idMovies NOT IN (
-    SELECT idMovies FROM User_Watch_List WHERE idUsers = 1
-)
-LIMIT 5;
-
 
 
 SELECT 
