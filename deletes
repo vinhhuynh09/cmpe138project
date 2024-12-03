@@ -1,0 +1,27 @@
+INSERT INTO Users (Email, Username, Password)
+VALUES ('jai@google.com', 'movieman123', 'pass123');
+
+UPDATE User_Preferences
+SET min_runtime = '120 min', max_runtime = '150 min'
+WHERE idUsers = 1;
+
+DELETE FROM Users_Fav_Genres
+WHERE idUsers = 1
+AND idGenres = (SELECT idGenres FROM Genres WHERE idGenres= 3);
+
+
+DELETE FROM Users_Fav_Actors
+WHERE idUsers = 1
+AND idStarring = (SELECT idStarring FROM Starring WHERE idStarring= 24065);
+
+DELETE FROM Users_fav_Directors
+WHERE idUsers = 1  -- Replace with the user's ID
+AND idDirectors = (SELECT idDirectors FROM Directors WHERE idDirectors= 29);
+
+DELETE FROM User_Watch_List
+WHERE idUsers = 1 
+AND idMovies = (SELECT idMovies FROM Movies WHERE idMovies = 4170); 
+
+DELETE FROM Users_Watched_Movies
+WHERE idUsers = 1 
+AND idMovies = (SELECT idMovies FROM Movies WHERE idMovies = 4142);
